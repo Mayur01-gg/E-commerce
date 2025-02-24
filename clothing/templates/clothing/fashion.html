@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Product Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background-color: #fffaf0;
+            color: #8b7500;
+            text-align: center;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .header {
+            background-color: #f7e6a8;
+            color: #8b7500;
+            padding: 20px;
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 4px 10px rgba(139, 117, 0, 0.3);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #faebd7;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(139, 117, 0, 0.3);
+        }
+
+        .navbar a {
+            color: #8b7500;
+            text-decoration: none;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            background-color: #8b7500;
+            color: #fffaf0;
+            border-radius: 5px;
+        }
+
+        .controls {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            border: 2px solid #8b7500;
+            border-radius: 5px;
+            padding: 10px;
+            background: #fff;
+        }
+
+        .search-bar {
+            border: none;
+            outline: none;
+            padding: 10px;
+            font-size: 1em;
+            background: transparent;
+            color: #8b7500;
+            flex-grow: 1;
+        }
+
+        .search-icon {
+            padding: 5px;
+            font-size: 1.5em;
+            color: #8b7500;
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 30px;
+            justify-items: center;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border: 2px solid #8b7500;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(139, 117, 0, 0.3);
+            transition: transform 0.3s ease-in-out;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto;
+            max-height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .cart-preview {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            background: #faf3dd;
+            border: 2px solid #8b7500;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(139, 117, 0, 0.3);
+            display: none;
+        }
+
+        .cart-preview.show {
+            display: block;
+        }
+
+        .footer {
+            background-color: #f7e6a8;
+            color: #8b7500;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+
+        .btn-danger {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+        }
+
+        .add-to-cart {
+            background-color: #ff9800;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-to-cart:hover {
+            background-color: #e68900;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">My Collection</div>
+    <div class="navbar">
+        <a href="#">Home</a>
+        <a href="#">Shop</a>
+        <a href="#">Categories</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <div class="controls">
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchBar" class="search-bar" placeholder="Search products..." onkeyup="filterProducts()">
+        </div>
+    </div>
+
+  <div class="gallery-container" id="productGallery">
+    {% if pro_img %}
+        {% for p_i in pro_img %}
+            <div class="product-card" data-price="{{ p_i.price }}" data-color="{{ p_i.color }}">
+                <h3>{{ p_i.name }}</h3>
+                <p><strong>Size:</strong> {{ p_i.size }}</p>
+                <p><strong>Color:</strong> {{ p_i.color }}</p>
+                <p><strong>Price:</strong> ₹{{ p_i.price }}</p>
+                {% if p_i.image %}
+                    <img src="{{ p_i.image.url }}" alt="{{ p_i.name }}" class="product-image">
+                {% else %}
+                    <p>No Image Available</p>
+                {% endif %}
+                <button class="add-to-cart" onclick="addToCart('{{ p_i.name }}', '{{ p_i.price }}')">Add to Cart</button>
+                <a href="{% url 'edit_product' p_i.id %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'delete_product' p_i.id %}" class="btn btn-danger">Delete</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No products available.</p>
+    {% endif %}
+</div>
+
+
+    <div class="cart-preview" id="cartPreview"></div>
+    <div class="footer">© 2025 LuxuryShop - All Rights Reserved</div>
+
+</body>
+</html>

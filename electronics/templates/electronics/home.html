@@ -1,0 +1,188 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head>     
+    <meta charset="UTF-8">     
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">     
+    <title>Electronic Store</title>     
+    <style>         
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;700&display=swap');
+                  
+        body {             
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        header {
+            background: linear-gradient(135deg, #007aff, #005ecb);
+            padding: 20px;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        nav {
+            background-color: #ffffff;
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        nav a {
+            color: #007aff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        nav a:hover {
+            background-color: #007aff;
+            color: white;
+            transform: scale(1.1);
+        }
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 50px 30px;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .product {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .product:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .product h2 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: #333;
+            font-weight: 600;
+        }
+        .price-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            gap: 10px;
+        }
+        .price-button, .buy-button {
+            display: inline-block;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            width: 150px;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .price-button {
+            background-color: #007aff;
+        }
+        .price-button:hover {
+            background-color: #005ecb;
+            transform: scale(1.08);
+        }
+        .buy-button {
+            background-color: #ff3b30;
+        }
+        .buy-button:hover {
+            background-color: #d32f2f;
+            transform: scale(1.08);
+        }
+        .dark-mode {
+            background-color: #1e1e1e;
+            color: #f4f4f4;
+        }
+        .dark-mode nav {
+            background-color: #333;
+        }
+        .dark-mode nav a {
+            color: #f4f4f4;
+        }
+        .dark-mode nav a:hover {
+            background-color: #444;
+        }
+        .dark-mode .product {
+            background: #333;
+            color: #f4f4f4;
+        }
+        .dark-mode header {
+            background: linear-gradient(135deg, #222, #444);
+        }
+        .toggle-container {
+            text-align: right;
+            padding: 10px;
+        }
+        .toggle-btn {
+            background-color: #007aff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .toggle-btn:hover {
+            background-color: #005ecb;
+        }
+    </style> 
+</head> 
+<body>     
+    <div class="toggle-container">
+        <button class="toggle-btn" onclick="toggleDarkMode()">Change Mode</button>
+    </div>
+    <header>Online Electronics</header>     
+    <nav>         
+        <a href="#">Home</a>         
+        <a href="#">Products</a>         
+        <a href="#">About</a>         
+        <a href="#">Contact</a>     
+    </nav>     
+    <div class="product-container">         
+        {% for pro in prod %}         
+        <div class="product">             
+            <img src="{{ pro.image_url }}" alt="{{ pro.name }}">             
+            <h2>{{ pro.name }}</h2>             
+            <p>{{ pro.desc }}</p>             
+            <div class="price-container">                 
+                <button class="price-button">${{ pro.price }}</button>                 
+                <button class="buy-button">Buy Now</button>             
+            </div>         
+        </div>         
+        {% endfor %}     
+    </div>
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body> 
+</html>
